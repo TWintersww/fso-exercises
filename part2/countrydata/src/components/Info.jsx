@@ -1,6 +1,6 @@
+import FullCountryInfo from "./FullCountryInfo";
 
-
-const Info = ({toDisplay}) => {
+const Info = ({toDisplay, showFull, updateShowFull}) => {
     const length = toDisplay.length;
 
     if (length > 10) {
@@ -13,11 +13,24 @@ const Info = ({toDisplay}) => {
     if (length < 10 && length > 1) {
         return (
             <div>
-                {toDisplay.map(country => {
+                {toDisplay.map((country, idx) => {
                     let countryname = country.name.common
-                    return (
-                        <div key={countryname}>{countryname}</div>
-                    )
+                    if (showFull[idx]) {
+                        return (
+                            <div key={countryname}>
+                                <FullCountryInfo country={country} />
+                                <button onClick={() => updateShowFull(countryname)}>hide</button>
+                            </div>
+                        )
+                    }
+                    else {
+                        return (
+                            <div key={countryname}>
+                                {countryname}
+                                <button onClick={() => updateShowFull(countryname)}>show</button>
+                            </div>
+                        )
+                    }
                 })}
             </div>
         )
@@ -26,19 +39,7 @@ const Info = ({toDisplay}) => {
         const country = toDisplay[0]
 
         return (
-            <div>
-                <h2>{country.name.common}</h2>
-                <div>capital {country.capital[0]}</div>
-                <div>area {country.area}</div>
-                <ul>
-                    {Object.values(country.languages).map(lang => {
-                        return (
-                            <li key={lang}>{lang}</li>
-                        )
-                    })}
-                </ul>
-                <img src={country.flags.png}/>
-            </div>
+            <FullCountryInfo country={country} />
         )
     }
     else {
