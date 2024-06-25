@@ -11,11 +11,16 @@ const usePersons = (handleNotifChange) => {
     }, [])
 
     const addPerson = (newPerson) => {
-        personsServices.postPerson(newPerson).then(returnValue => {
-            console.log('posted ', returnValue)
-            setPersons(persons.concat(returnValue))
-            handleNotifChange(`Added ${newPerson.name}`, `add`)
-        })
+        personsServices.postPerson(newPerson)
+            .then(returnValue => {
+                console.log('posted ', returnValue)
+                setPersons(persons.concat(returnValue))
+                handleNotifChange(`Added ${newPerson.name}`, `add`)
+            })
+            .catch(error => {
+                const errorMessage = error.response.data.error
+                handleNotifChange(errorMessage, `error`)
+            })
     }
 
     const updatePerson = (newPerson) => {
