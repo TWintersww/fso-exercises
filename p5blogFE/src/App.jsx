@@ -33,8 +33,10 @@ const App = () => {
   const addBlog = async (newBlog) => {
     blogFormRef.current.toggleVisible()
 
-    const returnedBlog = await blogService.addBlog(newBlog)
-    setBlogs(blogs.concat(returnedBlog))
+    await blogService.addBlog(newBlog)
+    blogService.getAll().then(blogs =>
+      setBlogs( blogs )
+    )  
 
     setNotifMsg(`a new blog ${newBlog.title} by ${newBlog.author} added`)
     setTimeout(() => {
@@ -68,7 +70,7 @@ const App = () => {
     const blogsSorted = [...blogs].sort(blogCompare)
 
     return (
-    <div>
+    <div className='allblogs' data-testid='allblogs'>
       {blogsSorted.map(blog =>
         <Blog 
           key={blog.id} 
@@ -97,7 +99,7 @@ const App = () => {
             <h2>blogs</h2>
             <div>
               {user.username} is logged in
-              <button onClick={handleLogout}>logout</button>
+              <button onClick={handleLogout} data-testid='logoutbutton'>logout</button>
             </div>
             {addNewBlogComponent()}
             {blogsComponent()}

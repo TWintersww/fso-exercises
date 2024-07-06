@@ -36,10 +36,12 @@ const Blog = ({ blog, handleBlogUpdate, handleBlogDelete, loggedInUsername }) =>
     }
   }
 
+  console.log(blog.user.username, loggedInUsername)
+
   return (showAll)
     ?
     (
-      <div style={blogStyle}>
+      <div style={blogStyle} className='fullBlog'>
         <div>
           {blog.title} {blog.author}
           <button onClick={toggleShowAll}>hide</button>
@@ -47,13 +49,13 @@ const Blog = ({ blog, handleBlogUpdate, handleBlogDelete, loggedInUsername }) =>
         <div className='urlDisplay'>{blog.url}</div>
         <div className='likesDisplay'>
           likes {blog.likes}
-          <button onClick={updateBlog}>like</button>
+          <button onClick={updateBlog} data-testid='likebutton'>like</button>
         </div>
         <div>{blog.user.name}</div>
         {
           (blog.user.username === loggedInUsername)
             ?
-            <button onClick={deleteBlog}>delete</button>
+            <button onClick={deleteBlog} data-testid='deletebutton'>delete</button>
             :
             <></>
         }
@@ -61,9 +63,9 @@ const Blog = ({ blog, handleBlogUpdate, handleBlogDelete, loggedInUsername }) =>
     )
     :
     (
-      <div style={blogStyle}>
+      <div style={blogStyle} className='partialBlog'>
         {blog.title} {blog.author}
-        <button onClick={toggleShowAll}>view</button>
+        <button onClick={toggleShowAll} data-testid='viewbutton'>view</button>
       </div>
     )
 }
